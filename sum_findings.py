@@ -65,6 +65,12 @@ def max_field_len_excel(ggchild, row_number):
     else:
         return field
 
+def get_iter_summary_xml(filename):
+    for element in ET.iterparse(filename):
+        if element[1].tag == "script_name":
+            print element[1].text
+        elif element[1].tag == "attributes":
+            print element[1].text
 
 def get_sum_from_xml(filename):
     print "\nParsing XML data...\n"
@@ -103,8 +109,9 @@ def get_sum_from_xml(filename):
 
 if __name__ == "__main__":
     if len(sys.argv) == 3:
-        results = get_sum_from_xml(sys.argv[1])
-        write_results(results, sys.argv[2])
+        get_iter_summary_xml(sys.argv[1])
+        # results = get_sum_from_xml(sys.argv[1])
+        # write_results(results, sys.argv[2])
         print "\nCompleted converting {} rows to CSV format.".format(len(results))
     else:
         print "\nUSAGE: python {} source_xml_file destination_csv_file\n " \
