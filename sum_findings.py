@@ -66,12 +66,27 @@ def max_field_len_excel(ggchild, row_number):
         return field
 
 def get_iter_summary_xml(filename):
+    master_list = []
     for element in ET.iterparse(filename):
-        if element[1].tag == "script_name":
-            print element[1].text
-        elif element[1].tag == "attributes":
-            print element[1].text
+        if element[1].tag == "nasl":
+            temp_row = {}
+            for child in element[1]:
+                if child.tag == "attributes":
 
+                    for gchild in child:
+                        for ggchild in gchild:
+                            if ggchild.tag == "name":
+                                gtag = ggchild.text
+                            elif ggchild.tag == "value":
+                                gtext = ggchild.text.strip()
+                        temp_row[gtag] = gtext
+                else:
+                    tag = child.tag
+                    text = child.text.strip()
+                    temp_row[tag] = text
+            master_list.append(temp_row)
+            # print temp_row
+    print len(master_list)
 def get_sum_from_xml(filename):
     print "\nParsing XML data...\n"
     results_table = [["script_name", "description", "cvss_base_score", "solution"]]
